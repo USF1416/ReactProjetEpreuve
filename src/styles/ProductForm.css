@@ -1,0 +1,32 @@
+.product-form {
+    max-width: 600px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .product-form label {
+    font-weight: bold;
+  }
+  
+  .product-form input,
+  .product-form textarea,
+  .product-form select {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .product-form button {
+    margin-top: 1rem;
+    padding: 0.7rem;
+    background-color: #003f7d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  

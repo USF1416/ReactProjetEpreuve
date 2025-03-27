@@ -1,0 +1,27 @@
+.two-factor-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .two-factor-container input {
+    font-size: 1.5rem;
+    text-align: center;
+    letter-spacing: 10px;
+    padding: 0.8rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .two-factor-container button {
+    margin-top: 1rem;
+    padding: 0.7rem;
+    background-color: #003f7d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
