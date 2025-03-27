@@ -1,6 +1,6 @@
 // frontend/src/components/Cart.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../styles/Cart.css";
 
 const Cart = ({ token }) => {
@@ -8,8 +8,8 @@ const Cart = ({ token }) => {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get('/api/cart', {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await axios.get("/api/cart", {
+        headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems(res.data);
     } catch (err) {
@@ -26,7 +26,7 @@ const Cart = ({ token }) => {
   const handleRemove = async (product_id) => {
     try {
       await axios.delete(`/api/cart/${product_id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       fetchCart();
     } catch (err) {
@@ -36,9 +36,13 @@ const Cart = ({ token }) => {
 
   const handleUpdate = async (cartItemId, quantity) => {
     try {
-      await axios.put(`/api/cart/${cartItemId}`, { quantity }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await axios.put(
+        `/api/cart/${cartItemId}`,
+        { quantity },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       fetchCart();
     } catch (err) {
       console.error(err);
@@ -47,14 +51,18 @@ const Cart = ({ token }) => {
 
   const handleCheckout = async () => {
     try {
-      const res = await axios.post('/api/cart/checkout', {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axios.post(
+        "/api/cart/checkout",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       alert(res.data.message);
       fetchCart();
     } catch (err) {
       console.error(err);
-      alert('Erreur lors de la finalisation de la commande');
+      alert("Erreur lors de la finalisation de la commande");
     }
   };
 
@@ -66,15 +74,16 @@ const Cart = ({ token }) => {
       ) : (
         <div>
           <ul>
-            {cartItems.map(item => (
+            {cartItems.map((item) => (
               <li key={item.id}>
-                <strong>{item.name}</strong> - {item.description} - {item.price} €
+                <strong>{item.name}</strong> - {item.description} - {item.price}{" "}
+                €
                 <br />
-                Quantité : 
-                <input 
-                  type="number" 
-                  value={item.quantity} 
-                  onChange={e => handleUpdate(item.id, e.target.value)} 
+                Quantité :
+                <input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => handleUpdate(item.id, e.target.value)}
                   min="1"
                 />
                 <button onClick={() => handleRemove(item.id)}>Retirer</button>

@@ -1,28 +1,27 @@
 // frontend/src/components/Profile.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../styles/Profile.css";
 
 const Profile = ({ token }) => {
   const [profile, setProfile] = useState(null);
-  
-  const fetchProfile = async () => {
-    try {
-      const res = await axios.get('/api/auth/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setProfile(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  
-  useEffect(() => {
+
+  useEffect(({ token }) => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("/api/auth/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setProfile(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
     fetchProfile();
   }, []);
-  
+
   if (!profile) return <p>Chargement...</p>;
-  
+
   return (
     <div>
       <h2>Mon Profil</h2>

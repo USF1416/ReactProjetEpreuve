@@ -1,23 +1,24 @@
 // frontend/src/App.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import ProductList from './components/ProductList';
-import ProductForm from './components/ProductForm';
-import SearchBar from './components/SearchBar';
-import Cart from './components/Cart';
-import Login from './components/Login';
-import Register from './components/Register';
-import Profile from './components/Profile';
+import React, { useState } from "react";
+import axios from "axios";
+import ProductList from "./components/ProductList";
+import ProductForm from "./components/ProductForm";
+import SearchBar from "./components/SearchBar";
+import Cart from "./components/Cart";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Profile from "./components/Profile";
+import './App.css';
 
 function App() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [view, setView] = useState('products'); // 'products' ou 'profile'
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [view, setView] = useState("products"); // 'products' ou 'profile'
 
-  const fetchProducts = async (query = '') => {
+  const fetchProducts = async (query = "") => {
     try {
       const res = await axios.get(`/api/products?search=${query}`);
       setProducts(res.data);
@@ -33,7 +34,7 @@ function App() {
 
   const handleCreate = async (product) => {
     try {
-      await axios.post('/api/products', product);
+      await axios.post("/api/products", product);
       fetchProducts(searchQuery);
     } catch (error) {
       console.error(error);
@@ -61,10 +62,10 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/auth/logout'); // facultatif, la déconnexion se fait surtout côté client
+      await axios.post("/api/auth/logout"); // facultatif, la déconnexion se fait surtout côté client
       setUser(null);
-      setToken('');
-      localStorage.removeItem('token');
+      setToken("");
+      localStorage.removeItem("token");
     } catch (err) {
       console.error(err);
     }
@@ -84,17 +85,21 @@ function App() {
     <div>
       <header>
         <h1>Application Ecommerce CRUD</h1>
-        <button onClick={() => setView('products')}>Produits</button>
-        <button onClick={() => setView('profile')}>Mon Profil</button>
+        <button onClick={() => setView("products")}>Produits</button>
+        <button onClick={() => setView("profile")}>Mon Profil</button>
         <button onClick={handleLogout}>Déconnexion</button>
       </header>
-      {view === 'profile' ? (
+      {view === "profile" ? (
         <Profile token={token} />
       ) : (
         <div>
           <SearchBar onSearch={setSearchQuery} />
           <ProductForm
-            onSubmit={selectedProduct ? (prod) => handleUpdate(selectedProduct.id, prod) : handleCreate}
+            onSubmit={
+              selectedProduct
+                ? (prod) => handleUpdate(selectedProduct.id, prod)
+                : handleCreate
+            }
             product={selectedProduct}
           />
           <ProductList
