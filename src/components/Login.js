@@ -1,21 +1,21 @@
 // frontend/src/components/Login.js
 import React, { useState } from "react";
 import axios from "axios";
-import TwoFactor from "./TwoFactor";
+// import TwoFactor from "./TwoFactor";
 import "../styles/Login.css";
 
 const Login = ({ setUser, setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [awaiting2FA, setAwaiting2FA] = useState(false);
+  // const [awaiting2FA, setAwaiting2FA] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/api/auth/login", { email, password });
-      // Passage en mode vérification 2FA ; en production le code est envoyé par email/SMS.
-      setAwaiting2FA(true);
-      alert(`Code de vérification (demo) : ${res.data.code_demo}`);
+      setUser(res.data.user);
+      setToken(res.data.token);
+      localStorage.setItem("token", res.data.token);
     } catch (err) {
       console.error(err);
       alert("Erreur lors de la connexion");
@@ -28,9 +28,11 @@ const Login = ({ setUser, setToken }) => {
     localStorage.setItem("token", data.token);
   };
 
+  /*
   if (awaiting2FA) {
     return <TwoFactor email={email} onVerified={handleVerified} />;
   }
+  */
 
   return (
     <form onSubmit={handleSubmit}>
