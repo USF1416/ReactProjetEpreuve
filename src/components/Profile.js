@@ -22,15 +22,28 @@ const Profile = ({ token }) => {
     else setError("Non connecté.");
   }, [token]);
 
-  if (error) return <p>Erreur : {error}</p>;
-  if (!profile) return <p>Chargement du profil...</p>;
+  if (error) return <p className="error">{error}</p>;
+  if (!profile) return <p className="loading">Chargement du profil...</p>;
 
   return (
-    <div>
-      <h2>Mon Profil</h2>
-      <p>Nom : {profile.name}</p>
-      <p>Email : {profile.email}</p>
-      <p>Date d'inscription : {profile.created_at}</p>
+    <div className="profile-container">
+      <div className="profile-card">
+        <h2>👤 Mon Profil</h2>
+        <p>
+          <strong>Nom :</strong> {profile.name}
+        </p>
+        <p>
+          <strong>Email :</strong> {profile.email}
+        </p>
+        <p>
+          <strong>Date d'inscription :</strong>{" "}
+          {new Date(profile.created_at).toLocaleDateString("fr-FR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
+      </div>
     </div>
   );
 };
