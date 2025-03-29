@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../styles/Register.css";
+import "../styles/auth.css";
 
 const Register = ({ setUser, setToken }) => {
   const [name, setName] = useState("");
@@ -26,40 +26,39 @@ const Register = ({ setUser, setToken }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Inscription</h2>
-      <div>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>Inscription</h2>
         <label>Nom :</label>
         <input
           type="text"
+          placeholder="Votre nom"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
-      </div>
-      <div>
         <label>Email :</label>
         <input
           type="email"
+          placeholder="Adresse email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </div>
-      <div>
         <label>Mot de passe :</label>
         <input
           type="password"
+          placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </div>
-      <p>
-        <Link to="/login">Déjà inscrit ?</Link>
-      </p>
-      <button type="submit">S'inscrire</button>
-    </form>
+        <button type="submit">S'inscrire</button>
+        <p className="switch-form">
+          Déjà inscrit ? <Link to="/login">Clique ici</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 

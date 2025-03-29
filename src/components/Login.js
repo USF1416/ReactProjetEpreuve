@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../styles/Login.css";
+import "../styles/auth.css";
 
 const Login = ({ setUser, setToken }) => {
   const [email, setEmail] = useState("");
@@ -21,31 +21,32 @@ const Login = ({ setUser, setToken }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Connexion</h2>
-      <div>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>Connexion</h2>
         <label>Email :</label>
         <input
           type="email"
+          placeholder="Adresse email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </div>
-      <div>
         <label>Mot de passe :</label>
         <input
           type="password"
+          placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </div>
-      <p>
-        <Link to="/register">Pas encore inscrit ?</Link>
-      </p>
-      <button type="submit">Se connecter</button>
-    </form>
+        <button type="submit">Se connecter</button>
+        <p className="switch-form">
+          Pas encore inscrit ? <Link to="/register">Clique ici</Link>
+        </p>
+        
+      </form>
+    </div>
   );
 };
 
