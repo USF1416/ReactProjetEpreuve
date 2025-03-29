@@ -87,15 +87,19 @@ function App() {
                 </Link>
               </h1>
               <SearchBar onSearch={setSearchQuery} />
-              <button>
-                <Link to="/products">Produits</Link>
-              </button>
-              <button>
-                <Link to="/profile">Mon Profil</Link>
-              </button>
-              <button>
-                <Link to="/cart">Mon Panier</Link>
-              </button>
+
+              <Link to="/products">
+                <button>Produits</button>
+              </Link>
+
+              <Link to="/profile">
+                <button>Mon Profil</button>
+              </Link>
+
+              <Link to="/cart">
+                <button>Mon Panier</button>
+              </Link>
+
               <button onClick={handleLogout}>Déconnexion</button>
             </nav>
           </header>
@@ -113,7 +117,6 @@ function App() {
               path="/products"
               element={
                 <div>
-                  <SearchBar onSearch={setSearchQuery} />
                   <ProductList products={products} onDelete={handleDelete} />
                 </div>
               }
