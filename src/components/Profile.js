@@ -1,12 +1,12 @@
-// frontend/src/components/Profile.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/Profile.css";
 
 const Profile = ({ token }) => {
   const [profile, setProfile] = useState(null);
+  const [error, setError] = useState(null);
 
-  useEffect(({ token }) => {
+  useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await axios.get("/api/auth/profile", {
@@ -14,13 +14,16 @@ const Profile = ({ token }) => {
         });
         setProfile(res.data);
       } catch (err) {
+        setError("Impossible de charger le profil.");
         console.error(err);
       }
     };
-    fetchProfile();
-  }, []);
+    if (token) fetchProfile();
+    else setError("Non connecté.");
+  }, [token]);
 
-  if (!profile) return <p>Chargement...</p>;
+  if (error) return <p>Erreur : {error}</p>;
+  if (!profile) return <p>Chargement du profil...</p>;
 
   return (
     <div>

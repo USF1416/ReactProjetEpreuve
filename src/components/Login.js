@@ -1,13 +1,10 @@
-// frontend/src/components/Login.js
 import React, { useState } from "react";
 import axios from "axios";
-// import TwoFactor from "./TwoFactor";
 import "../styles/Login.css";
 
 const Login = ({ setUser, setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [awaiting2FA, setAwaiting2FA] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,21 +15,9 @@ const Login = ({ setUser, setToken }) => {
       localStorage.setItem("token", res.data.token);
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de la connexion");
+      alert(err.response?.data?.message || "Erreur lors de la connexion");
     }
   };
-
-  const handleVerified = (data) => {
-    setUser(data.user);
-    setToken(data.token);
-    localStorage.setItem("token", data.token);
-  };
-
-  /*
-  if (awaiting2FA) {
-    return <TwoFactor email={email} onVerified={handleVerified} />;
-  }
-  */
 
   return (
     <form onSubmit={handleSubmit}>

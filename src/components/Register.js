@@ -1,4 +1,3 @@
-// frontend/src/components/Register.js
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Register.css";
@@ -21,7 +20,7 @@ const Register = ({ setUser, setToken }) => {
       localStorage.setItem("token", res.data.token);
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de l'inscription");
+      alert(err.response?.data?.message || "Erreur lors de l'inscription");
     }
   };
 

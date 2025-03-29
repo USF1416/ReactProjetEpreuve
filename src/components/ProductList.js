@@ -1,30 +1,26 @@
 import "../styles/ProductList.css";
+import { Link } from "react-router-dom";
 
 const ProductList = ({ products }) => {
   return (
     <div>
       <h2>Liste des produits</h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+      <div className="product-list">
         {products.length === 0 ? (
           <p>Aucun produit trouvé.</p>
         ) : (
           products.map((product) => (
-            <div
+            <Link
               key={product.id}
-              style={{
-                border: "1px solid #ccc",
-                padding: "1rem",
-                width: "200px",
-                borderRadius: "8px",
-              }}
+              to={`/products/${product.id}`}
+              className="product-card"
             >
-              <h4>{product.nom}</h4>
-              <h4>{product.categorie}</h4>
+              <h4>{product.name}</h4>
               <p>{product.description}</p>
               <p>
-                <strong>{product.prix} €</strong>
+                <strong>{product.price} €</strong>
               </p>
-            </div>
+            </Link>
           ))
         )}
       </div>

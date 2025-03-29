@@ -1,4 +1,3 @@
-// frontend/src/components/Cart.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/Cart.css";
@@ -18,9 +17,7 @@ const Cart = ({ token }) => {
   };
 
   useEffect(() => {
-    if (token) {
-      fetchCart();
-    }
+    if (token) fetchCart();
   }, [token]);
 
   const handleRemove = async (product_id) => {
@@ -66,9 +63,13 @@ const Cart = ({ token }) => {
     }
   };
 
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
-    <div>
-      <h2>Mon Panier</h2>
+    <div className="cart-container">
+      <h2>
+        Mon Panier ({totalItems} article{totalItems > 1 ? "s" : ""})
+      </h2>
       {cartItems.length === 0 ? (
         <p>Votre panier est vide.</p>
       ) : (
@@ -76,20 +77,28 @@ const Cart = ({ token }) => {
           <ul>
             {cartItems.map((item) => (
               <li key={item.id}>
-                <strong>{item.name}</strong> - {item.description} - {item.price}{" "}
-                €
+                <strong>{item.name}</strong> - {item.description} - {item.price} €
                 <br />
                 Quantité :
                 <input
                   type="number"
                   value={item.quantity}
-                  onChange={(e) => handleUpdate(item.id, e.target.value)}
+                  onChange={(e) =>
+                    handleUpdate(item.id, parseInt(e.target.value))
+                  }
                   min="1"
                 />
                 <button onClick={() => handleRemove(item.id)}>Retirer</button>
               </li>
             ))}
           </ul>
+          <p style={{ fontWeight: "bold", marginTop: "1rem" }}>
+            Total à payer :{" "}
+            {cartItems
+              .reduce((acc, item) => acc + item.price * item.quantity, 0)
+              .toFixed(2)}{" "}
+            €
+          </p>
           <button onClick={handleCheckout}>Finaliser la commande</button>
         </div>
       )}
