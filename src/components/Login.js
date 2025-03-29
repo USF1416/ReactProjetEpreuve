@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../styles/Login.css";
 
 const Login = ({ setUser, setToken }) => {
@@ -15,7 +16,7 @@ const Login = ({ setUser, setToken }) => {
       localStorage.setItem("token", res.data.token);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Erreur lors de la connexion");
+      alert("Erreur lors de la connexion");
     }
   };
 
@@ -23,7 +24,7 @@ const Login = ({ setUser, setToken }) => {
     <form onSubmit={handleSubmit}>
       <h2>Connexion</h2>
       <div>
-        <label>Email : </label>
+        <label>Email :</label>
         <input
           type="email"
           value={email}
@@ -32,7 +33,7 @@ const Login = ({ setUser, setToken }) => {
         />
       </div>
       <div>
-        <label>Mot de passe : </label>
+        <label>Mot de passe :</label>
         <input
           type="password"
           value={password}
@@ -40,6 +41,9 @@ const Login = ({ setUser, setToken }) => {
           required
         />
       </div>
+      <p>
+        <Link to="/register">Pas encore inscrit ?</Link>
+      </p>
       <button type="submit">Se connecter</button>
     </form>
   );

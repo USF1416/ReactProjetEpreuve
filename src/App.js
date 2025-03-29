@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import ProductList from "./components/ProductList";
 import SearchBar from "./components/SearchBar";
 import Cart from "./components/Cart";
@@ -54,67 +54,77 @@ function App() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        "/api/auth/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setUser(null);
-      setToken("");
-      localStorage.removeItem("token");
-      window.location.href = "/";
-    } catch (err) {
-      console.error("Erreur handleLogout:", err);
-    }
+  const handleLogout = () => {
+    setUser(null);
+    setToken("");
+    localStorage.removeItem("token");
   };
-
-  if (!user) {
-    return (
-      <div>
-        <Link to="/" className="site-title">
-          <h1>Application Ecommerce CRUD</h1>
-        </Link>
-
-        <Register setUser={setUser} setToken={setToken} />
-        <Login setUser={setUser} setToken={setToken} />
-      </div>
-    );
-  }
 
   return (
     <div>
-      <header>
-        <h1>Application Ecommerce CRUD</h1>
-        <nav>
-          <Link to="/products">Produits</Link>
-          {" | "}
-          <Link to="/profile">Mon Profil</Link>
-          {" | "}
-          <Link to="/cart">Mon Panier</Link>
-          {" | "}
-          <button onClick={handleLogout}>Déconnexion</button>
-        </nav>
-      </header>
-      <Routes>
-        <Route
-          path="/products"
-          element={
-            <div>
+      {!user ? (
+        <div>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route
+              path="/register"
+              element={<Register setUser={setUser} setToken={setToken} />}
+            />
+            <Route
+              path="/login"
+              element={<Login setUser={setUser} setToken={setToken} />}
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </div>
+      ) : (
+        <div>
+          <header>
+            <nav>
+              <h1 style={{ cursor: "pointer" }}>
+                <Link to="/" className="site-title">
+                  Application Ecommerce CRUD
+                </Link>
+              </h1>
               <SearchBar onSearch={setSearchQuery} />
-              <ProductList products={products} onDelete={handleDelete} />
-            </div>
-          }
-        />
-        <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path="/profile" element={<Profile token={token} />} />
-        <Route path="/cart" element={<Cart token={token} />} />
-      </Routes>
+              <button>
+                <Link to="/products">Produits</Link>
+              </button>
+              <button>
+                <Link to="/profile">Mon Profil</Link>
+              </button>
+              <button>
+                <Link to="/cart">Mon Panier</Link>
+              </button>
+              <button onClick={handleLogout}>Déconnexion</button>
+            </nav>
+          </header>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div>
+                  <h2>Bienvenue {user?.name} 👋</h2>
+                  <ProductList products={products} onDelete={handleDelete} />
+                </div>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <div>
+                  <SearchBar onSearch={setSearchQuery} />
+                  <ProductList products={products} onDelete={handleDelete} />
+                </div>
+              }
+            />
+            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/profile" element={<Profile token={token} />} />
+            <Route path="/cart" element={<Cart token={token} />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+      )}
     </div>
   );
 }

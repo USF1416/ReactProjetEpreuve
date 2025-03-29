@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../styles/Register.css";
 
 const Register = ({ setUser, setToken }) => {
@@ -20,7 +21,7 @@ const Register = ({ setUser, setToken }) => {
       localStorage.setItem("token", res.data.token);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Erreur lors de l'inscription");
+      alert("Erreur lors de l'inscription");
     }
   };
 
@@ -28,7 +29,7 @@ const Register = ({ setUser, setToken }) => {
     <form onSubmit={handleSubmit}>
       <h2>Inscription</h2>
       <div>
-        <label>Nom : </label>
+        <label>Nom :</label>
         <input
           type="text"
           value={name}
@@ -37,7 +38,7 @@ const Register = ({ setUser, setToken }) => {
         />
       </div>
       <div>
-        <label>Email : </label>
+        <label>Email :</label>
         <input
           type="email"
           value={email}
@@ -46,7 +47,7 @@ const Register = ({ setUser, setToken }) => {
         />
       </div>
       <div>
-        <label>Mot de passe : </label>
+        <label>Mot de passe :</label>
         <input
           type="password"
           value={password}
@@ -54,6 +55,9 @@ const Register = ({ setUser, setToken }) => {
           required
         />
       </div>
+      <p>
+        <Link to="/login">Déjà inscrit ?</Link>
+      </p>
       <button type="submit">S'inscrire</button>
     </form>
   );
