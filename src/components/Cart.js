@@ -31,11 +31,12 @@ const Cart = ({ token }) => {
     }
   };
 
-  const handleUpdate = async (cartItemId, quantity) => {
+  const handleUpdate = async (cartItemId, newQuantity) => {
+    if (newQuantity < 1) return;
     try {
       await axios.put(
         `/api/cart/${cartItemId}`,
-        { quantity },
+        { quantity: newQuantity },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -64,43 +65,68 @@ const Cart = ({ token }) => {
   };
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cartItems
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+    .toFixed(2);
 
   return (
     <div className="cart-container">
       <h2>
-        Mon Panier ({totalItems} article{totalItems > 1 ? "s" : ""})
+        🛒 Mon Panier ({totalItems} article{totalItems > 1 ? "s" : ""})
       </h2>
       {cartItems.length === 0 ? (
         <p>Votre panier est vide.</p>
       ) : (
-        <div>
-          <ul>
+        <>
+          <div className="cart-grid">
             {cartItems.map((item) => (
-              <li key={item.id}>
-                <strong>{item.name}</strong> - {item.description} - {item.price} €
-                <br />
-                Quantité :
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleUpdate(item.id, parseInt(e.target.value))
-                  }
-                  min="1"
+              <div key={item.id} className="cart-card">
+                <img
+                  src={item.image || "/no-image.png"}
+                  alt={item.name}
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
                 />
-                <button onClick={() => handleRemove(item.id)}>Retirer</button>
-              </li>
+                <h4>{item.name}</h4>
+                <p>{item.description}</p>
+                <p>
+                  <strong>{item.price} €</strong>
+                </p>
+                <div className="quantity-control">
+                  <button
+                    onClick={() => handleUpdate(item.cart_item_id, item.quantity - 1)}
+                  >
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    onClick={() => handleUpdate(item.cart_item_id, item.quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  className="remove-btn"
+                  onClick={() => handleRemove(item.id)}
+                >
+                  Retirer
+                </button>
+              </div>
             ))}
-          </ul>
-          <p style={{ fontWeight: "bold", marginTop: "1rem" }}>
-            Total à payer :{" "}
-            {cartItems
-              .reduce((acc, item) => acc + item.price * item.quantity, 0)
-              .toFixed(2)}{" "}
-            €
-          </p>
-          <button onClick={handleCheckout}>Finaliser la commande</button>
-        </div>
+          </div>
+          <div className="checkout-section">
+            <p>
+              <strong>Total à payer : {totalPrice} €</strong>
+            </p>
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Finaliser la commande
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
